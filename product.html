@@ -4,23 +4,26 @@
   <title>Shopping App</title>
   <!-- Including AngularJS library -->
   <script src="angular.js"></script>
+  <!-- Including Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
     /* Styling for the page */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
+      background-color: #f2f2f2; /* Grey background */
     }
     .container {
       max-width: 800px;
       margin: 20px auto;
       padding: 20px;
-      background-color: #f9f9f9;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background-color: #ffffff; /* White background */
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     }
     h1, h2 {
-      color: #333;
+      color: #333333; /* Dark gray */
     }
     input[type="text"],
     input[type="number"],
@@ -28,7 +31,7 @@
       padding: 8px;
       margin: 5px 0;
       border-radius: 3px;
-      border: 1px solid #ccc;
+      border: 1px solid #cccccc; /* Light gray */
       box-sizing: border-box;
     }
     input[type="text"],
@@ -36,12 +39,12 @@
       width: 100%;
     }
     button {
-      background-color: #4caf50;
+      background-color: #4caf50; /* Green */
       color: white;
       cursor: pointer;
     }
     button:hover {
-      background-color: #45a049;
+      background-color: #45a049; /* Darker green on hover */
     }
     table {
       border-collapse: collapse;
@@ -49,26 +52,26 @@
       margin-top: 20px;
     }
     th, td {
-      border: 1px solid #ddd;
+      border: 1px solid #dddddd; /* Light gray */
       padding: 8px;
       text-align: left;
     }
     th {
-      background-color: #f2f2f2;
+      background-color: #f2f2f2; /* Light gray background for table header */
     }
     .no-results {
-      color: #999;
+      color: #999999; /* Light gray */
       font-style: italic;
     }
     .total {
       font-weight: bold;
     }
     .remove-button {
-      background-color: #f44336;
+      background-color: #f44336; /* Red */
       color: white;
     }
     .remove-button:hover {
-      background-color: #d32f2f;
+      background-color: #d32f2f; /* Darker red on hover */
     }
   </style>
 </head>
@@ -77,28 +80,22 @@
   <h1>Product List</h1>
   <!-- Search input -->
   <input type="text" ng-model="searchQuery" placeholder="Search products">
-  <!-- Product table -->
-  <table>
-    <thead>
-      <tr>
-        <th>Product Name</th>
-        <th>Unit Cost</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Display products using ng-repeat -->
-      <tr ng-repeat="product in filteredProducts = (products | filter:searchQuery)">
-        <td>{{ product.name }}</td>
-        <td>{{ product.unitCost }}</td>
-        <td><button ng-click="addToCart(product)">Add to Cart</button></td>
-      </tr>
-      <!-- Display if no products found -->
-      <tr ng-if="filteredProducts.length === 0">
-        <td colspan="3" class="no-results">No products found.</td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Product cards -->
+  <div class="row">
+    <div class="col-sm-4" ng-repeat="product in filteredProducts = (products | filter:searchQuery)">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text">Unit Cost: {{ product.unitCost }}</p>
+          <button class="btn btn-primary" ng-click="addToCart(product)">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <!-- Display if no products found -->
+    <div class="col-sm-12" ng-if="filteredProducts.length === 0">
+      <p class="no-results">No products found.</p>
+    </div>
+  </div>
 
   <!-- Add New Product Section -->
   <h2>Add New Product</h2>
@@ -106,12 +103,12 @@
     <!-- Input fields for adding a new product -->
     <input type="text" ng-model="newProduct.name" placeholder="Product Name" required><br>
     <input type="number" ng-model="newProduct.unitCost" placeholder="Unit Cost" required><br>
-    <button type="submit">Add Product</button>
+    <button type="submit" class="btn btn-success">Add Product</button>
   </form>
 
   <!-- Shopping Cart Section -->
   <h2>Shopping Cart</h2>
-  <table>
+  <table class="table">
     <thead>
       <tr>
         <th>Product Name</th>
@@ -127,11 +124,11 @@
         <td>{{ item.product.unitCost }}</td>
         <!-- Input field to change quantity -->
         <td>
-          <input type="number" ng-model="item.quantity" ng-change="updateCart()">
+          <input type="number" ng-model="item.quantity" ng-change="updateCart()" class="form-control">
         </td>
         <!-- Button to remove item from the cart -->
         <td>
-          <button class="remove-button" ng-click="removeFromCart(item)">Remove</button>
+          <button class="btn btn-danger" ng-click="removeFromCart(item)">Remove</button>
         </td>
       </tr>
     </tbody>
@@ -224,7 +221,7 @@
 
     // Define the ProductService service
     app.service('ProductService', function($http) {
-      var serverUrl = 'http://localhost:3003/products';
+      var serverUrl = 'http://localhost:3001/products';
 
       // Fetch products from the server
       this.getProducts = function() {
