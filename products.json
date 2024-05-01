@@ -1,0 +1,39 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Smartphone",
+      "unitCost": 500
+    },
+    {
+      "id": 2,
+      "name": "Laptop",
+      "unitCost": 1000
+    },
+    {
+      "id": 3,
+      "name": "Headphones",
+      "unitCost": 50
+    },
+    {
+      "id": 4,
+      "name": "a",
+      "unitCost": 200
+    },
+    {
+      "id": 5,
+      "name": "r",
+      "unitCost": 345
+    },
+    {
+      "id": 6,
+      "name": "y",
+      "unitCost": 300
+    },
+    {
+      "id": 7,
+      "name": "r",
+      "unitCost": 700
+    }
+  ]
+}
