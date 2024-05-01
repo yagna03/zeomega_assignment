@@ -2,8 +2,10 @@
 <html ng-app="shoppingApp">
 <head>
   <title>Shopping App</title>
+  <!-- Including AngularJS library -->
   <script src="angular.js"></script>
   <style>
+    /* Styling for the page */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -71,8 +73,11 @@
   </style>
 </head>
 <body ng-controller="MainController" class="container">
+  <!-- Product List Section -->
   <h1>Product List</h1>
+  <!-- Search input -->
   <input type="text" ng-model="searchQuery" placeholder="Search products">
+  <!-- Product table -->
   <table>
     <thead>
       <tr>
@@ -82,24 +87,29 @@
       </tr>
     </thead>
     <tbody>
+      <!-- Display products using ng-repeat -->
       <tr ng-repeat="product in filteredProducts = (products | filter:searchQuery)">
         <td>{{ product.name }}</td>
         <td>{{ product.unitCost }}</td>
         <td><button ng-click="addToCart(product)">Add to Cart</button></td>
       </tr>
+      <!-- Display if no products found -->
       <tr ng-if="filteredProducts.length === 0">
         <td colspan="3" class="no-results">No products found.</td>
       </tr>
     </tbody>
   </table>
 
+  <!-- Add New Product Section -->
   <h2>Add New Product</h2>
   <form ng-submit="addNewProduct(newProduct)">
+    <!-- Input fields for adding a new product -->
     <input type="text" ng-model="newProduct.name" placeholder="Product Name" required><br>
     <input type="number" ng-model="newProduct.unitCost" placeholder="Unit Cost" required><br>
     <button type="submit">Add Product</button>
   </form>
 
+  <!-- Shopping Cart Section -->
   <h2>Shopping Cart</h2>
   <table>
     <thead>
@@ -111,33 +121,42 @@
       </tr>
     </thead>
     <tbody>
+      <!-- Display items in the cart -->
       <tr ng-repeat="item in cart">
         <td>{{ item.product.name }}</td>
         <td>{{ item.product.unitCost }}</td>
+        <!-- Input field to change quantity -->
         <td>
           <input type="number" ng-model="item.quantity" ng-change="updateCart()">
         </td>
+        <!-- Button to remove item from the cart -->
         <td>
           <button class="remove-button" ng-click="removeFromCart(item)">Remove</button>
         </td>
       </tr>
     </tbody>
   </table>
+  <!-- Display total cost of items in the cart -->
   <p class="total">Total: {{ calculateTotal() }}</p>
 
   <script>
+    // Define the AngularJS app module
     var app = angular.module('shoppingApp', []);
 
+    // Define the main controller
     app.controller('MainController', function($scope, ProductService) {
+      // Initialize scope variables
       $scope.products = [];
       $scope.cart = [];
       $scope.searchQuery = '';
       $scope.newProduct = { name: '', unitCost: '' };
 
+      // Fetch products from the server
       ProductService.getProducts().then(function(response) {
         $scope.products = response.data;
       });
 
+      // Add product to the cart
       $scope.addToCart = function(product) {
         var existingItem = $scope.cart.find(function(item) {
           return item.product.id === product.id;
@@ -150,15 +169,18 @@
         }
       };
 
+      // Remove product from the cart
       $scope.removeFromCart = function(item) {
         var index = $scope.cart.indexOf(item);
         $scope.cart.splice(index, 1);
       };
 
+      // Update cart (not used currently)
       $scope.updateCart = function() {
         // No need to do anything, ng-model handles changes
       };
 
+      // Calculate total cost of items in the cart
       $scope.calculateTotal = function() {
         var total = 0;
         $scope.cart.forEach(function(item) {
@@ -167,12 +189,14 @@
         return total;
       };
 
+      // Add a new product
       $scope.addNewProduct = function(newProduct) {
         var newProductId = $scope.products.length + 1;
         var productToAdd = { id: newProductId, name: newProduct.name, unitCost: newProduct.unitCost };
         $scope.products.push(productToAdd);
         $scope.newProduct = { name: '', unitCost: '' };
 
+        // Send request to add product to the server
         ProductService.addProduct(productToAdd)
           .then(function(response) {
             console.log('Product added successfully:', response.data);
@@ -182,10 +206,12 @@
           });
       };
 
+      // Remove a product
       $scope.removeProduct = function(product) {
         var index = $scope.products.indexOf(product);
         $scope.products.splice(index, 1);
 
+        // Send request to remove product from the server
         ProductService.removeProduct(product)
           .then(function(response) {
             console.log('Product removed successfully:', product);
@@ -196,17 +222,21 @@
       };
     });
 
+    // Define the ProductService service
     app.service('ProductService', function($http) {
-      var serverUrl = 'http://localhost:3001/products';
+      var serverUrl = 'http://localhost:3003/products';
 
+      // Fetch products from the server
       this.getProducts = function() {
         return $http.get(serverUrl);
       };
 
+      // Add product to the server
       this.addProduct = function(product) {
         return $http.post(serverUrl, product);
       };
 
+      // Remove product from the server
       this.removeProduct = function(product) {
         return $http.delete(serverUrl + '/' + product.id);
       };
