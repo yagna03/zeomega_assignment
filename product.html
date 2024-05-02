@@ -124,7 +124,7 @@
         <td>{{ item.product.unitCost }}</td>
         <!-- Input field to change quantity -->
         <td>
-          <input type="number" ng-model="item.quantity" ng-change="updateCart()" class="form-control">
+          <input type="number" ng-model="item.quantity" ng-change="updateCart()" class="form-control" min="1">
         </td>
         <!-- Button to remove item from the cart -->
         <td>
