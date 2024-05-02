@@ -102,7 +102,7 @@
   <form ng-submit="addNewProduct(newProduct)">
     <!-- Input fields for adding a new product -->
     <input type="text" ng-model="newProduct.name" placeholder="Product Name" required><br>
-    <input type="number" ng-model="newProduct.unitCost" placeholder="Unit Cost" required><br>
+    <input type="number" ng-model="newProduct.unitCost" placeholder="Unit Cost" required min="1"><br>
     <button type="submit" class="btn btn-success">Add Product</button>
   </form>
 
