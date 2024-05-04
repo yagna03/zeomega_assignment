@@ -99,9 +99,12 @@
 
   <!-- Add New Product Section -->
   <h2>Add New Product</h2>
-  <form ng-submit="addNewProduct(newProduct)">
+  <form ng-submit="addNewProduct(newProduct)" name="newProductForm">
     <!-- Input fields for adding a new product -->
-    <input type="text" ng-model="newProduct.name" placeholder="Product Name" required><br>
+    <!-- Modified the input field for product name to only accept string values -->
+    <input type="text" ng-model="newProduct.name" name="productName" placeholder="Product Name" required pattern="[a-zA-Z ]+" title="Only alphabets and spaces are allowed"><br>
+    <!-- Display error if the entered value is not a string -->
+    <div ng-show="newProductForm.productName.$error.pattern && !newProductForm.productName.$pristine" style="color:red">Please enter a valid product name.</div>
     <input type="number" ng-model="newProduct.unitCost" placeholder="Unit Cost" required min="1"><br>
     <button type="submit" class="btn btn-success">Add Product</button>
   </form>
@@ -124,7 +127,9 @@
         <td>{{ item.product.unitCost }}</td>
         <!-- Input field to change quantity -->
         <td>
+          <!-- Added validation for numbers >= 1 and error message -->
           <input type="number" ng-model="item.quantity" ng-change="updateCart()" class="form-control" min="1">
+          <div ng-show="item.quantity < 1" style="color: red;">Invalid input. Quantity must be 1 or more.</div>
         </td>
         <!-- Button to remove item from the cart -->
         <td>

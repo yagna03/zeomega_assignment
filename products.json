@@ -24,16 +24,6 @@
       "id": 5,
       "name": "r",
       "unitCost": 345
-    },
-    {
-      "id": 6,
-      "name": "y",
-      "unitCost": 300
-    },
-    {
-      "id": 7,
-      "name": "r",
-      "unitCost": 700
     }
   ]
 }
